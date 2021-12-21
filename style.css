@@ -1,0 +1,115 @@
+body{
+    background-color: white;
+}
+.all{
+    background-color: bisque;
+    margin-top: 1em;
+    margin-right: 10em;
+    margin-left: 10em;
+    padding: 2em;
+    border: 10px double orange;
+}
+h1{
+    /* So wird der Hintergrund des kompletten Kästchens gefärbt.
+    background-color: darkred;
+    */
+    color: darkgrey;
+    padding-left: 10px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 1px;
+}
+h2{
+    color: slategrey;
+    text-align: center;
+    padding-left: 5px;
+    padding-bottom:5px;
+    padding-top: 1px;
+}
+h3{
+    color: slategrey;
+    text-align: left;
+    padding-left: 5px;
+    padding-bottom:5px;
+    padding-top: 1px;
+}
+
+/* Provisorische Gestaltung der Navigation */
+
+.site-nav-list,
+.site-footer {
+    background-color: white;
+    padding: 1em;
+    border: 10px black;
+}
+.site-nav-list li {
+    display: inline;
+    margin-right: 1em;
+}
+.site-nav-list a,
+.site-footer {
+    color: black;
+    text-underline-style: dash;
+    text-decoration: none;
+}
+
+/* provisiorische Gestaltung der Meeting-Box auf der Startseite */
+.sidebox {
+    width: 200px;
+    margin-right: 0em;
+    background-color: white;
+    padding: 1em;
+    margin-top: 0em;
+    border: 5px orange;
+    float: right;
+}
+.next_meeting {
+    text-align: center;
+    background-color: darkgrey;
+    padding: 1em;
+    margin: 1em;
+}
+.container {
+    background-color: transparent;
+    text-align: center;
+    color: white;
+    padding: 2em;
+    position: relative;
+    margin-left: 25em;
+    margin-right: 25em;
+    margin-bottom: 5em;
+}
+.beschreibung{
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 1em;
+}
+#logout{
+    float: right;
+}
+
+#Passwort, #Name, #Benutzer{
+    margin-bottom:1em;
+    text-align: center;
+}
+.stundenplan{
+    background-color: grey;
+    text-align: left;
+    margin: 2em;
+}
+th, td {
+    padding: 0.5em 1em
+}
+.tablehead {
+    background-color: lightskyblue;
+    color: black;
+}
+.tablebody{
+    background-color: white;
+    color: black;
+}
+.tablefooter{
+    background-color: whitesmoke;
+    color: black;
+}
