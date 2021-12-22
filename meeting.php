@@ -5,6 +5,35 @@ include("connection.php");
 include("functions.php");
 
 $user_data = check_login($conn);
+
+if(isset($_POST['sub']))
+{
+    $modul = $_POST['modul'];
+    $desc = $_POST['descr'];
+    $link = $_POST['link'];
+
+    if(!empty($modul) && !empty($desc) && !empty($link))
+    {
+        $sql = "select * from Modul where name = '$modul'";
+        $res = $conn->query($sql);
+
+        if($res && mysqli_num_rows($res) > 0)
+        {
+            echo "modul schon vorhanden";
+        }
+        else
+        {
+            $user_id = $user_data['id'];
+            $query = "insert into Modul (name, beschreibung, link, Nutzer_id) values ('$modul', '$desc', '$link', '$user_id')";
+            $conn->query($query);
+            echo "Modul angelegt.";
+        }
+    }
+    else
+    {
+        echo "bitte alle Felder ausfüllen";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,10 +73,12 @@ $user_data = check_login($conn);
             <article class="sidebox">
 
                 <h3>Meeting hinzufügen</h3>
-                <input type="text" name="modul" id="modul">
-                <input type="text" name="descr" id="descr">
-                <input type="text" name="link" id="link">
-                <button type="submit" name="sub" id="sub"></button>
+                <form method="post">
+                <input type="text" placeholder="Modulname" name="modul" id="modul"><br><br>
+                <input type="text" placeholder="Beschreibung" name="descr" id="descr"><br><br>
+                <input type="text" placeholder="Link der Veranstaltung" name="link" id="link"><br><br>
+                <button type="submit" placeholder ="okay" name="sub" id="sub"></button>
+                </form>
             </article>
 
             <p>Plane deinen kompletten Alltag mit nur <strong>einer</strong> Anwendung!</p>

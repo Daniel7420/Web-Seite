@@ -13,7 +13,7 @@ function check_login($conn){
         }
     }
     //Wenn das nicht funktioniert, gehe zum login
-    header("Location: Login_neu.php");
+    header("Location: Login.php");
     die;
 }
 
@@ -81,6 +81,35 @@ function build_calendar ($conn){
     $result = $conn-->query($sql);
 
     if (mysqli_num_rows($result) == 1){
+
+    }
+}
+
+function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anhand der Anleitung von Stackoverflow: https://stackoverflow.com/questions/33331430/php-list-users-from-sql-database-in-table
+{
+    if(isset($user_data['id']))
+    {
+        $id = $user_data['id'];
+        $modul = $user_modul['id'];
+        $sql = "select * from Termin where Modul_id = '$modul' and Nutzer_id = '$id'";
+        $res = $conn->query($sql);
+        if (mysqli_num_rows($res) == 0)
+        {
+            $text = "Noch keine Einträge vorgeenommen";
+            return $text;
+        }
+        else
+        {
+            $user_termine = mysqli_fetch_assoc($res);
+            $row = 1;
+            while ($row < mysqli_num_rows($res))
+            {
+                echo "<tr>";
+                echo "td".$row['Termin_id'];
+            }
+
+        }
+
 
     }
 }
