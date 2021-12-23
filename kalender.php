@@ -5,6 +5,41 @@ include("connection.php");
 include("functions.php");
 
 $user_data = check_login($conn);
+
+if(isset($_POST['submit']))
+{
+    $date = $_POST['date'];
+    $uhrzeitv = $_POST['uhrzeitv'];
+    $uhrzeitb = $_POST['uhrzeitb'];
+    $beschreibung = $_POST['beschreibung'];
+    $modul = $_POST['modul'];
+    $link = $_POST['link'];
+    $nutzer = $user_data['id'];
+
+    echo "$date, $uhrzeitv, $uhrzeitb, $modul, $nutzer ";
+
+    if(!empty($date) && !empty($uhrzeitv) && !empty($uhrzeitb) && !empty($beschreibung) && !empty($modul))
+    {
+        echo "felder ausgefüllt ";
+        $query1 = "select * from Modul where name = '$modul' and Nutzer_id = '$nutzer'";
+        $res1 = $conn->query($query1);
+
+        if ($res1 && mysqli_num_rows($res1) > 0)
+        {
+            $module_for_appointment = mysqli_fetch_assoc($res1);
+            $modul_id = $module_for_appointment['id'];
+            echo "$modul_id";
+            echo "erfolgreich";
+
+            $sql = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id) values ('$beschreibung', '$date', '$uhrzeitv', '$uhrzeitb', '$$modul_id', '$nutzer')";
+            $conn->query($sql);
+        }
+        else{
+            echo "Kein Eintrag vorhanden!";
+        }
+
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -39,19 +74,25 @@ $user_data = check_login($conn);
         </ul>
 
     </nav>
+
+
     <main class="site-content">
         <section class="content-sidebox">
-            <article class="sidebox">
-                <p><strong>Neue Datei hinzufügen</strong></p><br>
-                <input type="text" placeholder="Muss noch geändert werden!" name="upload" id="upload"><br>
-                <p><strong>Neues Ereignis eintragen</strong></p><br>
-                <input type="date" name="date" id="date"><br>
-                <input type="time" name="Uhrzeit" id="Uhrzeit"><br>
-                <input type="text" placeholder="Beschreibung" name="Beschreibung" id="Beschreibung"><br>
-                <input type="text" placeholder="Modul" name="Modul" id="Modul"><br>
-                <input type="text" placeholder="Link" name="Link" id="Link"><br>
-                <input type="checkbox"><strong>Wiederkehrendes Meeting</strong>
-            </article>
+            <form method="post">
+                <article class="sidebox">
+                    <p><strong>Neue Datei hinzufügen</strong></p><br>
+                    <input type="text" placeholder="ICS Datei hochladen" name="upload" id="upload"><br>
+                    <p><strong>Neues Ereignis eintragen</strong></p><br>
+                    <input type="date" name="date" id="date"><br><br>
+                    <input type="time" placeholder="von" name="uhrzeitv" id="uhrzeitv"><br><br>
+                    <input type="time" placeholder="bis" name="uhrzeitb" id="uhrzeitb"><br><br>
+                    <input type="text" placeholder="beschreibung" name="beschreibung" id="beschreibung"><br><br>
+                    <input type="text" placeholder="modul" name="modul" id="modul"><br><br>
+                    <input type="text" placeholder="link" name="link" id="link"><br><br>
+                    <input type="checkbox"><strong>Wiederkehrendes Meeting</strong><br>
+                    <button type="submit" placeholder="Zum Kalender hinzufügen" name="submit" id="submit"><br><br>
+                </article>
+            </form>
         </section>
         <section class="content-kalender">
 
