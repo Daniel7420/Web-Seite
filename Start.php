@@ -24,8 +24,19 @@ $user_nextMeeting = processNextMeeting($conn, $user_appointment);
 <div>
     <div class="all"
     <header class="site-header">
+        <div class ="logout">
+            <form method="post">
+                <button id="logout" type="submit">Logout</button>
+            </form>
+        </div>
+        <?php
+        if(isset($_POST['logout'])){
+            session_destroy();
+            header('Location: Login.php');
+        }
+        ?>
         <h1>
-            <?php echo $user_data['name'],'`s ';?>Planner-
+            <?php echo $user_data['vorname'],'`s ';?>Planner-
         </h1>
         <h2>
             All in one for every Student

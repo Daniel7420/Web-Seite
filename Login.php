@@ -60,10 +60,10 @@ $conn->close();
                 <form method="post">
                     <div style="font-size: 30px; margin: 10px; color: darkslategrey;">Login</div>
 
-                    <input type="text" placeholder="Bitte Benutzernamen eingeben" name="mail" id="mail"><br>
-                    <input type="password" placeholder="Bitte Passwort eingeben" name="passwort" id="passwort"><br>
+                    <input type="text" placeholder="Bitte Benutzernamen eingeben" name="mail" id="mail"><br><br>
+                    <input type="password" placeholder="Bitte Passwort eingeben" name="passwort" id="passwort"><br><br>
 
-                    <button type="submit" id="login" name="login">Login</button>
+                    <button type="submit" id="login" name="login">Login</button><br><br>
                     <a href="signup.php">Kein Account?</a>
                 </form>
             </div>
