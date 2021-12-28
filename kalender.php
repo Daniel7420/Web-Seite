@@ -23,8 +23,9 @@ if(isset($_POST['submit']))
         echo "felder ausgefüllt ";
         $query1 = "select * from Modul where name = '$modul' and Nutzer_id = '$nutzer'";
         $res1 = $conn->query($query1);
+        #echo mysqli_num_rows($res1);
 
-        if ($res1 && mysqli_num_rows($res1) > 0)
+        if (mysqli_num_rows($res1) > 0)
         {
             $module_for_appointment = mysqli_fetch_assoc($res1);
             $modul_id = $module_for_appointment['id'];
@@ -32,11 +33,12 @@ if(isset($_POST['submit']))
             echo "erfolgreich";
 
             $sql = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id) values ('$beschreibung', '$date', '$uhrzeitv', '$uhrzeitb', '$$modul_id', '$nutzer')";
-            $conn->query($sql);
+            mysqli_query($conn, $sql);
         }
-        else{
-            echo "Kein Eintrag vorhanden!";
+
         }
+    else{
+        echo "Kein Eintrag vorhanden!";
 
     }
 }

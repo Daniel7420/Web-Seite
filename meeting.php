@@ -74,24 +74,29 @@ if(isset($_POST['sub']))
 
                 <h3>Meeting hinzufügen</h3>
                 <form method="post">
-                <input type="text" placeholder="Modulname" name="modul" id="modul"><br><br>
-                <input type="text" placeholder="Beschreibung" name="descr" id="descr"><br><br>
-                <input type="text" placeholder="Link der Veranstaltung" name="link" id="link"><br><br>
-                <button type="submit" placeholder ="okay" name="sub" id="sub"></button>
+                    <input type="text" placeholder="Modulname" name="modul" id="modul"><br><br>
+                    <input type="text" placeholder="Beschreibung" name="descr" id="descr"><br><br>
+                    <input type="text" placeholder="Link der Veranstaltung" name="link" id="link"><br><br>
+                    <button type="submit" placeholder ="okay" name="sub" id="sub"></button>
                 </form>
             </article>
+        </section>
+        <section class="meeting_list">
+            <?php
 
+            ?>
+        </section>
             <p>Plane deinen kompletten Alltag mit nur <strong>einer</strong> Anwendung!</p>
             <p><em>Module</em> anlegen, <em>Kalender</em> füllen, <em>Notizen</em> anlegen und alles <em>mit Freunden teilen</em></p>
 
-            <!-- Das ist eine geordnete Liste mit Nummern statt Aufzählungspunkten
-            <ol>
-                <li>Modul anlegen</li>
-                <li>Modul Meeting-Link und Zeiten zum Modul eintragen</li>
-                <li>Notizen unter diesem Dokument ablegen</li>
-            </ol>
-            -->
-        </section>
+
+        <!-- Das ist eine geordnete Liste mit Nummern statt Aufzählungspunkten
+        <ol>
+            <li>Modul anlegen</li>
+            <li>Modul Meeting-Link und Zeiten zum Modul eintragen</li>
+            <li>Notizen unter diesem Dokument ablegen</li>
+        </ol>
+        -->
 
     </main>
     <!--

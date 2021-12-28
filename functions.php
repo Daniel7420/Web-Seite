@@ -74,15 +74,44 @@ function next_meeting($conn){
     return $result;
 }
 */
+function delete_old_meetings($conn)
+{}
 function build_calendar ($conn){
 
-    $id = $_SESSION['id'];
-    $sql = "select * from Nutzer where 'id' = $id";
+    $id = $_SESSION['id'];                                                                              #id des aktuellen Nutzers
+    $sql = "select * from Termin where Nutzer_id = '$id' order by Datum, Zeitv";                        #giebt alle Termine des Nutzers wieder
     $result = $conn-->query($sql);
+    $current_date = date('Y-m-d', time());
+    $array = array(
+        '0' => $array("U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "U9"),
+        '1' => array ("-", "--", "---", "----", "-----", "------", "-------", "--------", "---------", "----------"),
+        '2' => array ("_", "--", "---", "----", "-----", "------", "-------", "--------", "---------", "----------"),
+        '3' => array (".", "--", "---", "----", "-----", "------", "-------", "--------", "---------", "----------")
+    );
 
-    if (mysqli_num_rows($result) == 1){
+    while ($i = 0 < 7)
+    {
+        while($j = 0 < 9) {
+#schleife muss erstmal über die Zeilen laufen und danach über die spalten!
+            echo "<td>", "</td>";
+            echo "<tr>";
+            echo "<td>", $array[$i][$j], "</td>";
+            $j = $j +1;
+        }
+        $j = 0;
+        $i = $i + 1;
+    }
+
+    #Montag festlegen
+    if (mysqli_num_rows($result) > 0)                                                                   #gibt es Termine für die angezeigte Woche
+    {
+        $user_termine = mysqli_fetch_assoc($result);                                                    #nur diese Termine sollen im Array gespeichert werden
+               #while()/foreach(start:Montag, Ende Sonntag, Tag++                                       #gibt es am Montag einen termin
+       #$z1 = '-';
+        #$z1 = $user_termine['beschreibung']
 
     }
+
 }
 
 function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anhand der Anleitung von Stackoverflow: https://stackoverflow.com/questions/33331430/php-list-users-from-sql-database-in-table

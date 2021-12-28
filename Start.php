@@ -59,6 +59,7 @@ $user_nextMeeting = processNextMeeting($conn, $user_appointment);
             <table class="stundenplan">
                 <thead class="tablehead">
                 <tr>
+                    <th>UHRZEIT</th>
                     <th>MONTAG</th>
                     <th>DIENSTAG</th>
                     <th>MITTWOCH</th>
@@ -70,18 +71,39 @@ $user_nextMeeting = processNextMeeting($conn, $user_appointment);
                 </thead>
                 <tbody class="tablebody">
                 <tr>
-                    <td>Zeile 1, Spalte 1</td>
+                    <td style="text-align: center">08:00 - 09:30</td>
                     <td>Zeile 1, Spalte 2</td>
                     <td>Zeile 1, Spalte 3</td>
                     <td>Zeile 1, Spalte 4</td>
                     <td>Zeile 1, Spalte 5</td>
                     <td>Zeile 1, Spalte 6</td>
                     <td>Zeile 1, Spalte 7</td>
+                    <td>Zeile 1, Spalte 8</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">09:45 - 11:15</td>
+                    <td>Zeile 2, Spalte 2</td>
+                    <td>Zeile 2, Spalte 3</td>
+                    <td>Zeile 2, Spalte 4</td>
+                    <td>Zeile 2, Spalte 5</td>
+                    <td>Zeile 2, Spalte 6</td>
+                    <td>Zeile 2, Spalte 7</td>
+                    <td>Zeile 2, Spalte 8</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">11:30 - 13:00</td>
+                    <td>Zeile 3, Spalte 2</td>
+                    <td>Zeile 3, Spalte 3</td>
+                    <td>Zeile 3, Spalte 4</td>
+                    <td>Zeile 3, Spalte 5</td>
+                    <td>Zeile 3, Spalte 6</td>
+                    <td>Zeile 3, Spalte 7</td>
+                    <td>Zeile 3, Spalte 8</td>
                 </tr>
                 </tbody>
                 <tfoot class="tablefooter">
                 <tr>
-                    <td colespan="7">die Tabellen Fußzeile geht über alle spalten</td>
+                    <td colespan="8">die Tabellen Fußzeile geht über alle spalten</td>
                 </tr>
                 </tfoot>
             </table>
