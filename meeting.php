@@ -46,9 +46,15 @@ if(isset($_POST['sub']))
 <div class="all">
     <div class ="logout">
         <form method="post">
-            <button id="logout" type="submit">Logout</button>
+            <button id="logout" name="logout" type="submit">Logout</button>
         </form>
     </div>
+    <?php
+    if(isset($_POST['logout'])){
+        session_destroy();
+        header('Location: logout.php');
+    }
+    ?>
     <hr>
     <nav class="site-nav">
         <ul class="site-nav-list">
@@ -72,7 +78,7 @@ if(isset($_POST['sub']))
 
             <article class="sidebox">
 
-                <h3>Meeting hinzufügen</h3>
+                <h3>Modul hinzufügen</h3>
                 <form method="post">
                     <input type="text" placeholder="Modulname" name="modul" id="modul"><br><br>
                     <input type="text" placeholder="Beschreibung" name="descr" id="descr"><br><br>

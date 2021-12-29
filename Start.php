@@ -26,13 +26,13 @@ $user_nextMeeting = processNextMeeting($conn, $user_appointment);
     <header class="site-header">
         <div class ="logout">
             <form method="post">
-                <button id="logout" type="submit">Logout</button>
+                <button id="logout" name="logout" type="submit">Logout</button>
             </form>
         </div>
         <?php
         if(isset($_POST['logout'])){
             session_destroy();
-            header('Location: Login.php');
+            header('Location: logout.php');
         }
         ?>
         <h1>

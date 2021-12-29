@@ -31,9 +31,17 @@ if(isset($_POST['submit']))
             $modul_id = $module_for_appointment['id'];
             echo "$modul_id";
             echo "erfolgreich";
+            if (empty($link))
+            {
+                $termin_link = $module_for_appointment['link'];
+            }
+            else
+            {
+                $termin_link = $link;
+            }
 
-            $sql = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id) values ('$beschreibung', '$date', '$uhrzeitv', '$uhrzeitb', '$$modul_id', '$nutzer')";
-            mysqli_query($conn, $sql);
+            $query2 = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id, link) values ('$beschreibung', '$date', '$uhrzeitv', '$uhrzeitb', '$modul_id', '$nutzer', '$termin_link')";
+            $result = $conn->query($query2);
         }
 
         }
@@ -41,6 +49,7 @@ if(isset($_POST['submit']))
         echo "Kein Eintrag vorhanden!";
 
     }
+    # https://www.youtube.com/watch?v=yNolUEBE3Wc --> creating an array
 }
 ?>
 
@@ -57,10 +66,15 @@ if(isset($_POST['submit']))
     <header class="site-header">
         <div class ="logout">
             <form method="post">
-                <button id="logout" type="submit">Logout</button>
+                <button id="logout" name="logout" type="submit">Logout</button>
             </form>
         </div>
-
+        <?php
+        if(isset($_POST['logout'])){
+            session_destroy();
+            header('Location: logout.php');
+        }
+        ?>
         <h1>
             Kalender
         </h1>

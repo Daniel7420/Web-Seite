@@ -17,9 +17,15 @@ $user_data = check_login($conn);
 <div class="all">
     <div class ="logout">
         <form method="post">
-            <button id="logout" type="submit">Logout</button>
+            <button id="logout" name="logout" type="submit">Logout</button>
         </form>
     </div>
+    <?php
+    if(isset($_POST['logout'])){
+        session_destroy();
+        header('Location: logout.php');
+    }
+    ?>
     <hr>
     <nav class="site-nav">
         <ul class="site-nav-list">
