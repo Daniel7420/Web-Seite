@@ -65,17 +65,7 @@ function getNextMeeting($conn, $user_data){
     }
     die;
 }
-/*
-function next_meeting($conn){
-    #if(isset($_SESSION['id'])){
-    #   $id = $_SESSION['id'];
-    $sql = "select * from Termin where nutzer_id = '1'";
-    $result = $conn->query($sql);
-    return $result;
-}
-*/
-function delete_old_meetings($conn)
-{}
+
 function build_calendar ($conn){
 
     $id = $_SESSION['id'];                                                                              #id des aktuellen Nutzers
@@ -120,24 +110,45 @@ function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anh
     {
         $id = $user_data['id'];
         $modul = $user_modul['id'];
-        $sql = "select * from Termin where Modul_id = '$modul' and Nutzer_id = '$id'";
+        $sql = "select * from Termin where Nutzer_id = '$id'";
         $res = $conn->query($sql);
-        if (mysqli_num_rows($res) == 0)
-        {
-            $text = "Noch keine Einträge vorgeenommen";
-            return $text;
-        }
-        else
-        {
-            $user_termine = mysqli_fetch_assoc($res);
-            $row = 1;
-            while ($row < mysqli_num_rows($res))
-            {
-                echo "<tr>";
-                echo "td".$row['Termin_id'];
-            }
 
+        $array = array();
+        if (mysqli_num_rows($res) > 0)
+        {
+            while ($row = mysqli_fetch_assoc($res))
+            {
+                $array[] = $row;
+                #erstellt immer einen neuen eintrag in $array für jede zeile
+
+            }
+            $num = count($array);
+            #print_r($array);
+            #echo $num;
+            $i = 0;
+
+
+            while ($i < count($array))
+            {
+                $modul_id = $array[$i]['Modul_id'];
+                echo $modul_id;
+                $sql = "select * from Modul where id = '$modul_id'";
+                $result = $conn->query($sql);
+                if (mysqli_num_rows($result) > 0)
+                {
+                    $user_termin_modul = mysqli_fetch_assoc($res);
+                    $user_termin_modulname = $user_termin_modul['name'];
+                    echo $user_termin_modulname;
+                    echo "<p> <strong>Meeting", $i+1, ": ", $user_termin_modulname, "</strong></p>";
+                    echo "<p>", $array[$i]['Beschreibung'], "</p>";
+                    echo "<p>", $array[$i]['Datum'], " Zeit: ",$array[$i]['Zeitv'], "</p>";
+                    echo "<p>", $array[$i]['link'], "</p>";
+                    $i = $i + 1;
+                }
+
+            }
         }
+
 
 
     }

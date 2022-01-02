@@ -37,7 +37,8 @@ h3{
 /* Provisorische Gestaltung der Navigation */
 
 .site-nav-list,
-.site-footer {
+.site-footer
+{
     background-color: white;
     padding: 1em;
     border: 10px black;
@@ -112,4 +113,13 @@ th, td {
 .tablefooter{
     background-color: whitesmoke;
     color: black;
+}
+.meetings{
+    flex: 1;
+    background: lightskyblue;
+}
+.content-sidebox{
+    width: 200px;
+    background: white;
+    margin-right: 10px;
 }

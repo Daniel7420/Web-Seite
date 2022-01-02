@@ -5,6 +5,7 @@ include("connection.php");
 include("functions.php");
 
 $user_data = check_login($conn);
+$user_modul = getMoudul($conn, $user_data);
 
 if(isset($_POST['sub']))
 {
@@ -74,9 +75,13 @@ if(isset($_POST['sub']))
     </header>
 
     <main class="site-content">
-        <section class="-content-sidebox">
 
-            <article class="sidebox">
+        <div style="display: flex">
+            <div class="meetings">
+                <?php show_user_meetings($conn, $user_data, $user_modul);?>;
+            </div>
+
+        <section class="content-sidebox">
 
                 <h3>Modul hinzufügen</h3>
                 <form method="post">
@@ -85,16 +90,8 @@ if(isset($_POST['sub']))
                     <input type="text" placeholder="Link der Veranstaltung" name="link" id="link"><br><br>
                     <button type="submit" placeholder ="okay" name="sub" id="sub"></button>
                 </form>
-            </article>
         </section>
-        <section class="meeting_list">
-            <?php
-
-            ?>
-        </section>
-            <p>Plane deinen kompletten Alltag mit nur <strong>einer</strong> Anwendung!</p>
-            <p><em>Module</em> anlegen, <em>Kalender</em> füllen, <em>Notizen</em> anlegen und alles <em>mit Freunden teilen</em></p>
-
+        </div>
 
         <!-- Das ist eine geordnete Liste mit Nummern statt Aufzählungspunkten
         <ol>
