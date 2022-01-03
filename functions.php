@@ -105,6 +105,7 @@ function build_calendar ($conn){
 }
 
 function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anhand der Anleitung von Stackoverflow: https://stackoverflow.com/questions/33331430/php-list-users-from-sql-database-in-table
+#https://www.youtube.com/watch?v=gnkI7hIC2RU
 {
     if(isset($user_data['id']))
     {
