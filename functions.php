@@ -51,7 +51,6 @@ function getNextMeeting($conn, $user_data){
     if(isset($user_data['id'])){
         $id = $user_data['id'];
         $current_date = date('Y-m-d', time());
-        echo $current_date;
         $sql = "select * from Termin where Nutzer_id = '$id' and Datum = '$current_date'";
         $result = $conn->query($sql);
 
@@ -66,43 +65,42 @@ function getNextMeeting($conn, $user_data){
     die;
 }
 
-function build_calendar ($conn){
+function build_calendar ($conn, $user_data)
+{
+    if (isset($user_data['id'])) {
+        $id = $user_data['id'];
+        #$modul = $user_modul['id'];
+        $current = date('Y-m-d', time());
+        $monday = date('Y-m-d',time()+( 1 - date('w'))*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
+        echo "letzter Montag: ", $monday;
+        $sunday = date('Y-m-d',time()+( 7 - date('w'))*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
+        echo "nächster Sonntag: ", $sunday;
+        $sql = "select * from Termin where Nutzer_id = '$id' and Datum BETWEEN '2022-01-03' AND '2022-01-09'";
+        $res = $conn->query($sql);
 
-    $id = $_SESSION['id'];                                                                              #id des aktuellen Nutzers
-    $sql = "select * from Termin where Nutzer_id = '$id' order by Datum, Zeitv";                        #giebt alle Termine des Nutzers wieder
-    $result = $conn-->query($sql);
-    $current_date = date('Y-m-d', time());
-    $array = array(
-        '0' => $array("U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8", "U9"),
-        '1' => array ("-", "--", "---", "----", "-----", "------", "-------", "--------", "---------", "----------"),
-        '2' => array ("_", "--", "---", "----", "-----", "------", "-------", "--------", "---------", "----------"),
-        '3' => array (".", "--", "---", "----", "-----", "------", "-------", "--------", "---------", "----------")
-    );
+        $array_termine = array();
+        $array_Zeit = ['08:00:00', '09:30:00', '11:15:00', '13:00:00', '14:00:00', '15:30:00', '17:15:00', '19:00:00'];
 
-    while ($i = 0 < 7)
-    {
-        while($j = 0 < 9) {
-#schleife muss erstmal über die Zeilen laufen und danach über die spalten!
-            echo "<td>", "</td>";
-            echo "<tr>";
-            echo "<td>", $array[$i][$j], "</td>";
-            $j = $j +1;
+        if (mysqli_num_rows($res) > 0) {
+            while ($row = mysqli_fetch_assoc($res)) {
+                $array_termine[] = $row;
+                #erstellt immer einen neuen eintrag in $array für jede zeile
+            }
+            $i = 0;
+            while ($i < count($array_termine)) {
+                $modul_id = $array_termine[$i]['Modul_id'];
+                #überprüfen, ob Modul tatsächlich existiert
+                $sql = "select * from Modul where id = '$modul_id'";
+                $result = $conn->query($sql);
+                if (mysqli_num_rows($result) > 0) {
+
+                }
+                $i = $i + 1;
+            }
         }
-        $j = 0;
-        $i = $i + 1;
     }
-
-    #Montag festlegen
-    if (mysqli_num_rows($result) > 0)                                                                   #gibt es Termine für die angezeigte Woche
-    {
-        $user_termine = mysqli_fetch_assoc($result);                                                    #nur diese Termine sollen im Array gespeichert werden
-               #while()/foreach(start:Montag, Ende Sonntag, Tag++                                       #gibt es am Montag einen termin
-       #$z1 = '-';
-        #$z1 = $user_termine['beschreibung']
-
-    }
-
 }
+
 
 function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anhand der Anleitung von Stackoverflow: https://stackoverflow.com/questions/33331430/php-list-users-from-sql-database-in-table
 #https://www.youtube.com/watch?v=gnkI7hIC2RU
@@ -123,23 +121,18 @@ function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anh
                 #erstellt immer einen neuen eintrag in $array für jede zeile
 
             }
-            $num = count($array);
-            #print_r($array);
-            #echo $num;
+
             $i = 0;
-
-
             while ($i < count($array))
             {
                 $modul_id = $array[$i]['Modul_id'];
-                echo $modul_id;
+                #echo $modul_id;
                 $sql = "select * from Modul where id = '$modul_id'";
                 $result = $conn->query($sql);
                 if (mysqli_num_rows($result) > 0)
                 {
-                    $user_termin_modul = mysqli_fetch_assoc($res);
+                    $user_termin_modul = mysqli_fetch_assoc($result);
                     $user_termin_modulname = $user_termin_modul['name'];
-                    echo $user_termin_modulname;
                     echo "<p> <strong>Meeting", $i+1, ": ", $user_termin_modulname, "</strong></p>";
                     echo "<p>", $array[$i]['Beschreibung'], "</p>";
                     echo "<p>", $array[$i]['Datum'], " Zeit: ",$array[$i]['Zeitv'], "</p>";
@@ -149,9 +142,6 @@ function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anh
 
             }
         }
-
-
-
     }
 }
 

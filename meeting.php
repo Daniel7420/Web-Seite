@@ -77,6 +77,7 @@ if(isset($_POST['sub']))
     <main class="site-content">
 
         <div style="display: flex">
+
             <div class="meetings">
                 <?php show_user_meetings($conn, $user_data, $user_modul);?>;
             </div>
