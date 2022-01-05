@@ -69,23 +69,40 @@ function build_calendar ($conn, $user_data)
 {
     if (isset($user_data['id'])) {
         $id = $user_data['id'];
-        #$modul = $user_modul['id'];
         $current = date('Y-m-d', time());
         $monday = date('Y-m-d',time()+( 1 - date('w'))*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
         echo "letzter Montag: ", $monday;
         $sunday = date('Y-m-d',time()+( 7 - date('w'))*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
         echo "nächster Sonntag: ", $sunday;
-        $sql = "select * from Termin where Nutzer_id = '$id' and Datum BETWEEN '2022-01-03' AND '2022-01-09'";
+
+        /*
+         * Ansatz: Array so aufbauen, dass man zum Generieren des Kalenders (Zuerst Zeile, dann Spalte)
+         * ein Array erstellt.
+         * Multidimensionales Array [0] => Schulplanerzeiten,
+         * Array[1] alle Daten zu einem Termin, der in der jeweiligen Uhrzeit stattfindet.
+         */
+
+        $sql = "select * from Termin where Nutzer_id = '$id' and Datum BETWEEN '$monday' AND '$sunday' order by `Termin`.`Zeitv`, `Termin`.`Datum`";
         $res = $conn->query($sql);
 
         $array_termine = array();
-        $array_Zeit = ['08:00:00', '09:30:00', '11:15:00', '13:00:00', '14:00:00', '15:30:00', '17:15:00', '19:00:00'];
+        $array_Zeit = ['08:00:00', '09:45:00', '11:30:00', '13:00:00', '14:00:00', '15:45:00', '17:30:00', '19:15:00', '21:00:00'];
+        /*
+         * Array_zeit (
+         * [0] => 08:00:00
+         * [1] => 09:30:00
+         * [2] => 11:15:00
+         * [3] => 13:00:00
+         * )
+         *
+         */
 
         if (mysqli_num_rows($res) > 0) {
-            while ($row = mysqli_fetch_assoc($res)) {
-                $array_termine[] = $row;
+            while ($row2 = mysqli_fetch_assoc($res)) {
+                $array_termine[] = $row2;
                 #erstellt immer einen neuen eintrag in $array für jede zeile
             }
+/*
             $i = 0;
             while ($i < count($array_termine)) {
                 $modul_id = $array_termine[$i]['Modul_id'];
@@ -93,10 +110,50 @@ function build_calendar ($conn, $user_data)
                 $sql = "select * from Modul where id = '$modul_id'";
                 $result = $conn->query($sql);
                 if (mysqli_num_rows($result) > 0) {
-
+                    echo "<tr>";
+                    echo "<td>", $array_Zeit[$i], "-", $array_Zeit[$i+1],"</td>";
+                    echo "<td>", Zeile 2, Spalte 2</td>
+                    <td>Zeile 2, Spalte 3</td>
+                    <td>Zeile 2, Spalte 4</td>
+                    <td>Zeile 2, Spalte 5</td>
+                    <td>Zeile 2, Spalte 6</td>
+                    <td>Zeile 2, Spalte 7</td>
+                    <td>Zeile 2, Spalte 8</td>
+                </tr>
                 }
                 $i = $i + 1;
             }
+*/
+        }
+
+        $j = 0;
+        while ($j < count($array_Zeit))
+            #generiert alle Zeilen
+        {
+            echo "<tr>";
+            echo "<td>", $array_Zeit[$j], "</td>";
+            $weekday = $monday;
+            $a = 0;
+            while ($a < 7)
+                #generiert weitere 7 Spalten pro Zeile
+            {
+                $von = $array_termine[$j]['Zeitv'];
+                echo $von;
+
+                if (($array_termine[$j]['Datum'] = $weekday))# && ($von >= $array_Zeit[$j]) && ($von < $array_Zeit[$j+1]))
+                {
+                    echo "<td>", $array_termine[$j]['Beschreibung'], "</td>";
+                }
+                else
+                {
+                    echo "<td> - </td>";
+                }
+                $a = $a + 1;
+                $weekday = date('Y-m-d',time()+( (1 + $a) - date('w'))*24*3600);
+
+            }
+            $j = $j + 1;
+            echo "</tr>";
         }
     }
 }
@@ -137,9 +194,9 @@ function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anh
                     echo "<p>", $array[$i]['Beschreibung'], "</p>";
                     echo "<p>", $array[$i]['Datum'], " Zeit: ",$array[$i]['Zeitv'], "</p>";
                     echo "<p>", $array[$i]['link'], "</p>";
-                    $i = $i + 1;
-                }
 
+                }
+                $i = $i + 1;
             }
         }
     }

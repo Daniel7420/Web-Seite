@@ -70,28 +70,9 @@ $user_nextMeeting = processNextMeeting($conn, $user_appointment);
                 </tr>
                 </thead>
                 <tbody class="tablebody">
+
                 <?php build_calendar($conn, $user_data);?>
 
-                <tr>
-                    <td style="text-align: center">09:45 - 11:15</td>
-                    <td>Zeile 2, Spalte 2</td>
-                    <td>Zeile 2, Spalte 3</td>
-                    <td>Zeile 2, Spalte 4</td>
-                    <td>Zeile 2, Spalte 5</td>
-                    <td>Zeile 2, Spalte 6</td>
-                    <td>Zeile 2, Spalte 7</td>
-                    <td>Zeile 2, Spalte 8</td>
-                </tr>
-                <tr>
-                    <td style="text-align: center">11:30 - 13:00</td>
-                    <td>Zeile 3, Spalte 2</td>
-                    <td>Zeile 3, Spalte 3</td>
-                    <td>Zeile 3, Spalte 4</td>
-                    <td>Zeile 3, Spalte 5</td>
-                    <td>Zeile 3, Spalte 6</td>
-                    <td>Zeile 3, Spalte 7</td>
-                    <td>Zeile 3, Spalte 8</td>
-                </tr>
                 </tbody>
                 <tfoot class="tablefooter">
                 <tr>
