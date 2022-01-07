@@ -71,9 +71,9 @@ function build_calendar ($conn, $user_data)
         $id = $user_data['id'];
         $current = date('Y-m-d', time());
         $monday = date('Y-m-d',time()+( 1 - date('w'))*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
-        echo "letzter Montag: ", $monday;
+        #echo "letzter Montag: ", $monday;
         $sunday = date('Y-m-d',time()+( 7 - date('w'))*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
-        echo "nächster Sonntag: ", $sunday;
+        #echo "nächster Sonntag: ", $sunday;
 
         /*
          * Ansatz: Array so aufbauen, dass man zum Generieren des Kalenders (Zuerst Zeile, dann Spalte)
@@ -102,28 +102,10 @@ function build_calendar ($conn, $user_data)
                 $array_termine[] = $row2;
                 #erstellt immer einen neuen eintrag in $array für jede zeile
             }
-/*
-            $i = 0;
-            while ($i < count($array_termine)) {
-                $modul_id = $array_termine[$i]['Modul_id'];
-                #überprüfen, ob Modul tatsächlich existiert
-                $sql = "select * from Modul where id = '$modul_id'";
-                $result = $conn->query($sql);
-                if (mysqli_num_rows($result) > 0) {
-                    echo "<tr>";
-                    echo "<td>", $array_Zeit[$i], "-", $array_Zeit[$i+1],"</td>";
-                    echo "<td>", Zeile 2, Spalte 2</td>
-                    <td>Zeile 2, Spalte 3</td>
-                    <td>Zeile 2, Spalte 4</td>
-                    <td>Zeile 2, Spalte 5</td>
-                    <td>Zeile 2, Spalte 6</td>
-                    <td>Zeile 2, Spalte 7</td>
-                    <td>Zeile 2, Spalte 8</td>
-                </tr>
-                }
-                $i = $i + 1;
-            }
-*/
+            #print_r($array_termine);
+            #print_r($array_Zeit);
+            #echo "Konstant:", $monday ;
+
         }
 
         $j = 0;
@@ -137,20 +119,30 @@ function build_calendar ($conn, $user_data)
             while ($a < 7)
                 #generiert weitere 7 Spalten pro Zeile
             {
-                $von = $array_termine[$j]['Zeitv'];
-                echo $von;
-
-                if (($array_termine[$j]['Datum'] = $weekday))# && ($von >= $array_Zeit[$j]) && ($von < $array_Zeit[$j+1]))
+                echo "<td>";
+                if ($a >= count($array_termine))
                 {
-                    echo "<td>", $array_termine[$j]['Beschreibung'], "</td>";
+                    echo "-";
                 }
-                else
-                {
-                    echo "<td> - </td>";
+                else {
+                    if ($array_termine[$a]['Zeitv'] >= $array_Zeit[$j] && $array_termine[$a]['Zeitv'] < $array_Zeit[$j + 1]) {
+                        if ($array_termine[$a]['Datum'] = $weekday) {
+                            $nutzer = $user_data['id'];
+                            $modul_id = $array_termine[$a]['Modul_id'];
+                            $quer = "select * from Modul where Nutzer_id = '$nutzer' and id = $modul_id";
+                            $resultat = $conn->query($quer);
+                            $modul = mysqli_fetch_assoc($resultat);
+                            echo $modul['name'], "von ", $array_termine[$a]['Zeitv'], "bis ", $array_termine[$a]['Zeitb'], "<br>";
+                        } else {
+                            echo "-";
+                        }
+                    } else {
+                        echo "-";
+                    }
                 }
+                echo "</td>";
                 $a = $a + 1;
                 $weekday = date('Y-m-d',time()+( (1 + $a) - date('w'))*24*3600);
-
             }
             $j = $j + 1;
             echo "</tr>";
