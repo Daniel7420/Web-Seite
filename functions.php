@@ -87,6 +87,7 @@ function build_calendar ($conn, $user_data)
 
         $array_termine = array();
         $array_Zeit = ['08:00:00', '09:45:00', '11:30:00', '13:00:00', '14:00:00', '15:45:00', '17:30:00', '19:15:00', '21:00:00'];
+
         /*
          * Array_zeit (
          * [0] => 08:00:00
@@ -110,44 +111,45 @@ function build_calendar ($conn, $user_data)
 
         $j = 0;
         while ($j < count($array_Zeit))
-            #generiert alle Zeilen
+            #generiert alle Zeilen 0<9
         {
             echo "<tr>";
+            #jte Zeile
             echo "<td>", $array_Zeit[$j], "</td>";
+            #1 Spalte der jten Zeile
             $weekday = $monday;
+            #erste Montag der Woche
             $a = 0;
             while ($a < 7)
                 #generiert weitere 7 Spalten pro Zeile
             {
                 echo "<td>";
-                if ($a >= count($array_termine))
-                {
-                    echo "-";
-                }
-                else {
-                    if ($array_termine[$a]['Zeitv'] >= $array_Zeit[$j] && $array_termine[$a]['Zeitv'] < $array_Zeit[$j + 1]) {
-                        if ($array_termine[$a]['Datum'] = $weekday) {
-                            $nutzer = $user_data['id'];
-                            $modul_id = $array_termine[$a]['Modul_id'];
-                            $quer = "select * from Modul where Nutzer_id = '$nutzer' and id = $modul_id";
-                            $resultat = $conn->query($quer);
-                            $modul = mysqli_fetch_assoc($resultat);
-                            echo $modul['name'], "von ", $array_termine[$a]['Zeitv'], "bis ", $array_termine[$a]['Zeitb'], "<br>";
-                        } else {
-                            echo "-";
+                #Anfang nächste Spalte
+                    $i = 0;
+                    while ($i < count($array_termine)) {
+                        if ($array_termine[$i]['Zeitv'] >= $array_Zeit[$j] && $array_termine[$i]['Zeitv'] < $array_Zeit[$j + 1]) {
+                            #Termin i Zeit >= jte Zeit & kleiner gleich jte +1 Zeit
+                            if ($array_termine[$i]['Datum'] == $weekday) {
+                                $nutzer = $user_data['id'];
+                                $modul_id = $array_termine[$i]['Modul_id'];
+                                $quer = "select * from Modul where Nutzer_id = '$nutzer' and id = $modul_id";
+                                $resultat = $conn->query($quer);
+                                $modul = mysqli_fetch_assoc($resultat);
+                                echo $modul['name'], " von ", $array_termine[$i]['Zeitv'], " bis ", $array_termine[$i]['Zeitb'], "<br>";
+                            }
                         }
-                    } else {
-                        echo "-";
+                        $i = $i+1;
                     }
-                }
-                echo "</td>";
                 $a = $a + 1;
+                echo "</td>";
                 $weekday = date('Y-m-d',time()+( (1 + $a) - date('w'))*24*3600);
             }
             $j = $j + 1;
             echo "</tr>";
         }
-    }
+
+        }
+
 }
 
 
