@@ -123,3 +123,6 @@ th, td {
     background: white;
     margin-right: 10px;
 }
+.content-kalender{
+    flex: 1;
+}

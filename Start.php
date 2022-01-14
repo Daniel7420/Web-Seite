@@ -54,55 +54,50 @@ $user_nextMeeting = processNextMeeting($conn, $user_appointment);
     </nav>
     <hr>
     <main class="site-content">
-        <section class="content-kalender">
+        <div style="display: flex">
+            <section class="content-kalender">
 
-            <table class="stundenplan">
-                <thead class="tablehead">
-                <tr>
-                    <th>UHRZEIT</th>
-                    <th>MONTAG</th>
-                    <th>DIENSTAG</th>
-                    <th>MITTWOCH</th>
-                    <th>DONNERSTAG</th>
-                    <th>FREITAG</th>
-                    <th>SAMSTAG</th>
-                    <th>SONNTAG</th>
-                </tr>
-                </thead>
-                <tbody class="tablebody">
+                <table class="stundenplan">
+                    <thead class="tablehead">
+                    <tr>
+                        <th>UHRZEIT</th>
+                        <th>MONTAG</th>
+                        <th>DIENSTAG</th>
+                        <th>MITTWOCH</th>
+                        <th>DONNERSTAG</th>
+                        <th>FREITAG</th>
+                        <th>SAMSTAG</th>
+                        <th>SONNTAG</th>
+                    </tr>
+                    </thead>
+                    <tbody class="tablebody">
 
-                <?php build_calendar($conn, $user_data);?>
+                    <?php build_calendar($conn, $user_data);?>
 
-                </tbody>
-                <tfoot class="tablefooter">
-                <tr>
-                    <td colespan="8">die Tabellen Fußzeile geht über alle spalten</td>
-                </tr>
-                </tfoot>
-            </table>
-        </section>
-        <section class="sidebox">
-            <article class="next_meeting">
+                    </tbody>
+                </table>
+            </section>
 
-                <h3>Nächstes Meeting</h3>
-                <p> <?php echo $user_data['name'], ', ';?></p> <br>
-                <p> <?php echo $user_nextMeeting;?></p> <br>
-                <a href="
-                    <?php
-                $modul_id = $user_appointment['Modul_id'];
-                $sql = "select link from Modul where id = $modul_id";
-                $result = $conn->query($sql);
-                $link = mysqli_fetch_assoc($result);
-                echo $link['link'];
-                ?>"
-                >Zum Meeting!
-                </a>
+            <section class="sidebox">
+                <article class="next_meeting">
 
+                    <h3>Nächstes Meeting</h3>
+                    <p> <?php echo $user_data['name'], ', ';?></p> <br>
+                    <p> <?php echo $user_nextMeeting;?></p> <br>
+                    <a href="
+                        <?php
+                    $modul_id = $user_appointment['Modul_id'];
+                    $sql = "select link from Modul where id = $modul_id";
+                    $result = $conn->query($sql);
+                    $link = mysqli_fetch_assoc($result);
+                    echo $link['link'];
+                    ?>"
+                    >Zum Meeting!
+                    </a>
 
-
-
-            </article>
-        </section>
+                </article>
+            </section>
+        </div>
     </main>
     <!--
     So werden beim Hovern über den jeweiligen Paragraphen Infos angezeigt!
