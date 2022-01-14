@@ -9,26 +9,24 @@ $conn->set_charset("utf8");
 
 if(isset($_POST['login'])){
     $mail = $_POST['mail'];
-    $passwort = $_POST['passwort'];
+    $uncrypted = $_POST['passwort'];
 
-    $sql = "SELECT * FROM Nutzer WHERE mail='$mail' AND passwort='$passwort'";
+    $sql = "SELECT * FROM Nutzer WHERE mail='$mail'";
     $result = $conn->query($sql);
+    $user_data = mysqli_fetch_assoc($result);
 
-    if($result && mysqli_num_rows($result) > 0) {
-
-        $user_data = mysqli_fetch_assoc($result);
+    if(password_verify($uncrypted, $user_data['passwort'])) {
+        //password_verify gefunden auf youtube unter: https://www.youtube.com/watch?v=DuXHjdK--DU
         #https://www.geeksforgeeks.org/how-to-display-logged-in-user-information-in-php/
 
-        if($user_data['passwort'] == $passwort){
             $_SESSION['mail'] = $user_data['mail'];
             header("Location: Start.php");
             die;
         }
-    }
-
     else {
         echo "Benutzername, oder Passwort ist nicht bekannt";
     }
+
 }
 $conn->close();
 

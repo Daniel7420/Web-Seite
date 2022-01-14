@@ -6,12 +6,13 @@ include('functions.php');
 
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     $mail = $_POST['mail'];
-    $passwort = $_POST['passwort'];
+    $uncrypted = $_POST['passwort'];
+    echo $passwort = password_hash("$uncrypted", PASSWORD_DEFAULT);
     $name = $_POST['name'];
     $vname = $_POST['vname'];
 
     if(!empty($mail) && !empty($passwort)){
-        $sql = "insert into Nutzer (name, vorname, mail, passwort) values ('$name', '$vname' '$mail', '$passwort')";
+        $sql = "insert into Nutzer (name, vorname, mail, passwort) values ('$name', '$vname', '$mail', '$passwort')";
 
         $conn->query($sql);
 
