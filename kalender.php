@@ -5,6 +5,7 @@ include("connection.php");
 include("functions.php");
 
 $user_data = check_login($conn);
+$modules = get_modules_as_array($user_data, $conn);
 
 if(isset($_POST['submit']))
 {
@@ -16,11 +17,10 @@ if(isset($_POST['submit']))
     $link = $_POST['link'];
     $nutzer = $user_data['id'];
 
-    echo "$date, $uhrzeitv, $uhrzeitb, $modul, $nutzer ";
+    echo "$date, $uhrzeitv, $uhrzeitb, $modul, $nutzer";
 
     if(!empty($date) && !empty($uhrzeitv) && !empty($uhrzeitb) && !empty($beschreibung) && !empty($modul))
     {
-        echo "felder ausgefüllt ";
         $query1 = "select * from Modul where name = '$modul' and Nutzer_id = '$nutzer'";
         $res1 = $conn->query($query1);
         #echo mysqli_num_rows($res1);
@@ -29,8 +29,8 @@ if(isset($_POST['submit']))
         {
             $module_for_appointment = mysqli_fetch_assoc($res1);
             $modul_id = $module_for_appointment['id'];
-            echo "$modul_id";
-            echo "erfolgreich";
+            #echo "$modul_id";
+            #echo "erfolgreich";
             if (empty($link))
             {
                 $termin_link = $module_for_appointment['link'];
@@ -39,10 +39,60 @@ if(isset($_POST['submit']))
             {
                 $termin_link = $link;
             }
+            if (isset($_POST['wiederholung']))
+            {
+                $wholung = $_POST['repititiondropdown'];
+                $until = $_POST['until'];
+                $datum = $date;
 
-            $query2 = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id, link) values ('$beschreibung', '$date', '$uhrzeitv', '$uhrzeitb', '$modul_id', '$nutzer', '$termin_link')";
-            $result = $conn->query($query2);
-        }
+                switch ($wholung)
+                {
+                    case 't':
+                        while ($datum <= $until)
+                        {
+                            #Datenrechnung gefunden untr: https://stackoverflow.com/questions/3727615/adding-days-to-date-in-php
+
+                            $query2 = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id, link) values ('$beschreibung', '$datum', '$uhrzeitv', '$uhrzeitb', '$modul_id', '$nutzer', '$termin_link')";
+                            $result = $conn->query($query2);
+
+                            $datum = date('Y-m-d', strtotime($datum. ' + 1 days'));
+                        }
+                    case 'w':
+                        while ($datum <= $until)
+                        {
+                            $query2 = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id, link) values ('$beschreibung', '$datum', '$uhrzeitv', '$uhrzeitb', '$modul_id', '$nutzer', '$termin_link')";
+                            $result = $conn->query($query2);
+
+                            $datum = date('Y-m-d', strtotime($datum. ' + 7 days'));
+                        }
+                    case 'm':
+                        while ($datum <= $until)
+                        {
+                            $query2 = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id, link) values ('$beschreibung', '$datum', '$uhrzeitv', '$uhrzeitb', '$modul_id', '$nutzer', '$termin_link')";
+                            $result = $conn->query($query2);
+
+                            $datum = date('Y-m-d', strtotime($datum. ' + 28 days'));
+                        }
+
+                    case 'j':
+                        while ($datum <= $until)
+                        {
+                            $query2 = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id, link) values ('$beschreibung', '$datum', '$uhrzeitv', '$uhrzeitb', '$modul_id', '$nutzer', '$termin_link')";
+                            $result = $conn->query($query2);
+
+                            $datum = date('Y-m-d', strtotime($datum. ' + 365 days'));
+                        }
+                }
+            }
+            else
+            {
+                $query2 = "insert into Termin (Beschreibung, Datum, Zeitv, Zeitb, Modul_id, Nutzer_id, link) values ('$beschreibung', '$date', '$uhrzeitv', '$uhrzeitb', '$modul_id', '$nutzer', '$termin_link')";
+                $result = $conn->query($query2);
+
+            }
+
+
+            }
 
         }
     else{
@@ -103,17 +153,28 @@ if(isset($_POST['submit']))
                     <input type="time" placeholder="von" name="uhrzeitv" id="uhrzeitv"><br><br>
                     <input type="time" placeholder="bis" name="uhrzeitb" id="uhrzeitb"><br><br>
                     <input type="text" placeholder="beschreibung" name="beschreibung" id="beschreibung"><br><br>
-                    <input type="text" placeholder="modul" name="modul" id="modul"><br><br>
-                    <input type="text" placeholder="link" name="link" id="link"><br><br>
-                    <input type="checkbox"><strong>Wiederkehrendes Meeting</strong><br>
+                    <select name="modul", id="modul">
+                        <?php
+                        create_module_dropdown($modules);
+                        ?>
+                    </select>
+                    <!--<input type="text" placeholder="modul" name="modul" id="modul"><br><br>-->
+                    <input type="text" placeholder="link" name="link" id="link"><br><br><br>
+
+                    <input type="checkbox" name="wiederholung"><strong>Wiederkehrendes Meeting</strong><br>
+                    <select name="repititiondropdown", id="repititiondropdown"">
+                        <option value="t">Täglich</option>
+                        <option value="w">Wöchentlich</option>
+                        <option value="m">Monatliche</option>
+                        <option value="j">Jährlich</option>
+                    </select>
+                    <input type="date" name="until"><br><br>
+
                     <button type="submit" placeholder="Zum Kalender hinzufügen" name="submit" id="submit"><br><br>
                 </article>
             </form>
         </section>
         <section class="content-kalender">
-
-            <p>Plane deinen kompletten Alltag mit nur <strong>einer</strong> Anwendung!</p>
-            <p><em>Module</em> anlegen, <em>Kalender</em> füllen, <em>Notizen</em> anlegen und alles <em>mit Freunden teilen</em></p>
 
             <!-- Das ist eine geordnete Liste mit Nummern statt Aufzählungspunkten
             <ol>

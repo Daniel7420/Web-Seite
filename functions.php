@@ -196,5 +196,30 @@ function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anh
     }
 }
 
+function get_modules_as_array($user_data, $conn)
+{
+    $id = $user_data['id'];
+    $query = "select name from Modul where Nutzer_id = '$id'";
+    $res = $conn->query($query);
+
+    while ($row = mysqli_fetch_assoc($res))
+    {
+        $array[] = $row;
+
+    }
+    return $array;
+}
+function create_module_dropdown($array)
+{
+    $i = 0;
+    while ($i < count($array))
+    {
+        $value = $array[$i]['name'];
+        echo "<option value='$value'>$value</option>";
+        $i = $i + 1;
+    }
+}
+
+
 
 
