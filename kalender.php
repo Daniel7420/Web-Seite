@@ -110,9 +110,9 @@ if(isset($_POST['submit']))
     <title>Kalender</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link href="style.css" rel="stylesheet">
+    <script src="Methods.js" defer></script>
 </head>
-<body>
-<div class="all">
+<body class="all">
     <header class="site-header">
         <div class ="logout">
             <form method="post">
@@ -143,7 +143,7 @@ if(isset($_POST['submit']))
 
 
     <main class="site-content">
-        <section class="content-sidebox">
+        <div class="content-sidebox">
             <form method="post">
                 <article class="sidebox">
                     <p><strong>Neue Datei hinzufügen</strong></p><br>
@@ -157,41 +157,30 @@ if(isset($_POST['submit']))
                         <?php
                         create_module_dropdown($modules);
                         ?>
-                    </select>
+                    </select><br><br>
                     <!--<input type="text" placeholder="modul" name="modul" id="modul"><br><br>-->
                     <input type="text" placeholder="link" name="link" id="link"><br><br><br>
 
-                    <input type="checkbox" name="wiederholung"><strong>Wiederkehrendes Meeting</strong><br>
+                    <input type="checkbox" id="wiederholung" name="wiederholung"><strong>Wiederkehrend</strong><br><br>
+                    <label for="wiederholung">Wiederkehrend</label>
                     <select name="repititiondropdown", id="repititiondropdown"">
                         <option value="t">Täglich</option>
                         <option value="w">Wöchentlich</option>
                         <option value="m">Monatliche</option>
                         <option value="j">Jährlich</option>
-                    </select>
+                    </select><br><br>
                     <input type="date" name="until"><br><br>
 
                     <button type="submit" placeholder="Zum Kalender hinzufügen" name="submit" id="submit"><br><br>
                 </article>
             </form>
-        </section>
-        <section class="content-kalender">
-
-            <!-- Das ist eine geordnete Liste mit Nummern statt Aufzählungspunkten
-            <ol>
-                <li>Modul anlegen</li>
-                <li>Modul Meeting-Link und Zeiten zum Modul eintragen</li>
-                <li>Notizen unter diesem Dokument ablegen</li>
-            </ol>
-            -->
-        </section>
-
-
+        </div>
 
     </main>
     <footer class="site-footer">
         <a href="#top">Nach Oben!</a>
     </footer>
-</div>
+
 </body>
 </html>
 
