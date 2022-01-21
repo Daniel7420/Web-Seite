@@ -147,7 +147,7 @@ if(isset($_POST['submit']))
             <form method="post">
                 <article class="sidebox">
                     <p><strong>Neue Datei hinzufügen</strong></p><br>
-                    <input type="text" placeholder="ICS Datei hochladen" name="upload" id="upload"><br>
+                    <input type="file" placeholder="ICS Datei hochladen" name="upload" id="upload"><br>
                     <p><strong>Neues Ereignis eintragen</strong></p><br>
                     <input type="date" name="date" id="date"><br><br>
                     <input type="time" placeholder="von" name="uhrzeitv" id="uhrzeitv"><br><br>
