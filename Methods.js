@@ -41,17 +41,26 @@ input.addEventListener('change', start => {
 
         counter = 0
 
+        //iteriert über alle Zeilen der Textdatei
         for(i = 0; i < lines.length; i++){
 
+            //Nach Konvention in der ICS-Datei der Start eines Termines
             if(lines[i] == 'BEGIN:VEVENT'){
                 myarray[counter] = [];
 
+                //grenzt Zeilen innerhalb eines Termines ein
                 while(lines[i] != 'END:VEVENT'){
 
+                    //DTSTART;TZID=Europe/Berlin:20220201T130000 (Format in ICS-Datei)
+                    //Trennt Strings vor und nach dem Doppelpunkt
                     y = lines[i].split(":");
                     if (y[0] === 'DTSTART;TZID=Europe/Berlin') {
+
+                        //Trennt zweiten String in Datum und Zeit auf : <20220201>T<130000>
                         datum = y[1].split("T")
                         zeit = datum [1];
+
+                        //Erstellt das richtige Zeitformat
                         zeit = zeit.slice(0, 2) + ":" + zeit.slice(2,4) + ":" +  zeit.slice(4,6);
 
                         datum = datum[0];
@@ -60,6 +69,7 @@ input.addEventListener('change', start => {
                         myarray[counter][0] = datum;
                         myarray[counter][1] = zeit;
 
+                        //Erkennt endzeitpunkt des Termines
                     } else if (y[0] === 'DTEND;TZID=Europe/Berlin') {
                         datumend = y[1].split("T");
                         zeit = datumend [1];
@@ -67,22 +77,35 @@ input.addEventListener('change', start => {
 
                         myarray [counter][2] = zeit;
 
+                        //CATEGORIES:Klausur
                     } else if (y[0] === 'CATEGORIES') {
 
                         myarray[counter][3] = y[1];
-                    } else if (y[0] === 'DESCRIPTION') {
+                    }
+
+                    //DESCRIPTION:Gehalten von Schönemann\, M.
+                    else if (y[0] === 'DESCRIPTION') {
 
                         myarray[counter][4] = y[1];
 
-                    } else if (y[0] === 'LOCATION') {
+                    }
+
+                    //LOCATION:Stadthalle Saal 1 & 2 (FB)
+                    else if (y[0] === 'LOCATION') {
 
                         myarray[counter][5] = y[1];
 
-                    } else if (y[0] === 'SUMMARY') {
+                    }
+
+                    //SUMMARY:Einführung in die Wirtschaftswissenschaften - Klausur
+                    else if (y[0] === 'SUMMARY') {
 
                         myarray[counter][6] = y[1];
 
-                    } else if (y[0] === 'COMMENT') {
+                    }
+
+                    //COMMENT:Klausur ohne Veranstaltung
+                    else if (y[0] === 'COMMENT') {
 
                         myarray[counter][7] = y[1];
                     }
@@ -92,6 +115,7 @@ input.addEventListener('change', start => {
             }
         }
 
+        //Iteriert über das erstellte Array und gibt es in der Konsole aus
         for(i = 0; i < counter;i++){
             console.log("Neuer Eintrag!")
             for(y = 0; y < 8; y++){
