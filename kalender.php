@@ -110,6 +110,7 @@ if(isset($_POST['submit']))
     <title>Kalender</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link href="style.css" rel="stylesheet">
+    <script src="jquery-3.6.0.js" defer></script>
     <script src="Methods.js" defer></script>
 </head>
 <body class="all">

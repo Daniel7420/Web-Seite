@@ -122,10 +122,24 @@ input.addEventListener('change', start => {
                 console.log(myarray[i][y]);
             }
 
-
         }
     }
 
+    //https://stackoverflow.com/questions/66406611/how-to-save-content-form-text-editor-to-database-in-php-and-javascript
+    function saveToDB (text) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", '/api.php', true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() { // Call a function when the state changes.
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                // Request finished. Do processing here.
+                text = "Hallo Welt";
+            }
+        }
+        let formData = new FormData();
+        formData.append("text", text); //add a field named `question` (received as $_POST['myarray'] in your PHP
+        xhr.send(new URLSearchParams(formData).toString()); //encode formData and send the request
+    }
 
     reader.onerror = (e) => alert(e.tag.error.name);
 
