@@ -70,7 +70,7 @@ if(isset($_POST['sub']))
     <header class="site-header">
 
         <h1>
-            Meeting
+            Module
         </h1>
     </header>
 
@@ -79,8 +79,9 @@ if(isset($_POST['sub']))
         <div style="display: flex">
 
             <div class="meetings">
-
-                <?php show_user_meetings($conn, $user_data, $user_modul);?>;
+                <div id="accordeon">
+                <?php show_user_meetings($conn, $user_data, $user_modul);?>
+                </div>
             </div>
 
             <section class="content-sidebox">

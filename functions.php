@@ -41,10 +41,16 @@ function processNextMeeting($conn, $user_appointment)
         //$link = $user_linkName['link'];
         $name = $user_linkName['name'];
         $zeit = $user_appointment['Zeitv'];
-        return $text1 = "$name steht um $zeit an, beeil dich!";
+        $datum = $user_appointment['Datum'];
+        $link = $user_appointment['link'];
+        echo "<p>$name steht am $datum um $zeit an, beeil dich! </p><br><br>";
+        echo "<a href = '$link'>Ab zum Meeting!</a>";
     }
-    return $text = "Für heute bist du durch mit den Meetings";
+    else
+    {
+    echo "Für heute bist du durch mit den Meetings";
     die;
+    }
 
 }
 function getNextMeeting($conn, $user_data){
@@ -70,10 +76,22 @@ function build_calendar ($conn, $user_data)
     if (isset($user_data['id'])) {
         $id = $user_data['id'];
         $current = date('Y-m-d', time());
+
+        #Probleme beim Finden des aktuellen Montags, da die Woche Sonntags beginnt
+        if (date('w') == 0)
+        {
+            $monday = date('Y-m-d',time()+( 1 - date('w')-7)*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
+            #echo "letzter Montag: ", $monday;
+            $sunday = date('Y-m-d',time()+( 7 - date('w')-7)*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
+            #echo "nächster Sonntag: ", $sunday;
+        }
+        else
+        {
         $monday = date('Y-m-d',time()+( 1 - date('w'))*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
         #echo "letzter Montag: ", $monday;
         $sunday = date('Y-m-d',time()+( 7 - date('w'))*24*3600); #gefunden: https://stackoverflow.com/questions/2958327/get-date-of-monday-in-current-week-in-php-4
         #echo "nächster Sonntag: ", $sunday;
+        }
 
         /*
          * Ansatz: Array so aufbauen, dass man zum Generieren des Kalenders (Zuerst Zeile, dann Spalte)
@@ -99,8 +117,9 @@ function build_calendar ($conn, $user_data)
          */
 
         if (mysqli_num_rows($res) > 0) {
-            while ($row2 = mysqli_fetch_assoc($res)) {
-                $array_termine[] = $row2;
+            while ($row3 = mysqli_fetch_assoc($res)) {
+
+                $array_termine[] = $row3;
                 #erstellt immer einen neuen eintrag in $array für jede zeile
             }
             #print_r($array_termine);
@@ -127,6 +146,7 @@ function build_calendar ($conn, $user_data)
                 #Anfang nächste Spalte
                     $i = 0;
                     while ($i < count($array_termine)) {
+                        #echo $array_termine[$i]['Zeitv'];
                         if ($array_termine[$i]['Zeitv'] >= $array_Zeit[$j] && $array_termine[$i]['Zeitv'] < $array_Zeit[$j + 1]) {
                             #Termin i Zeit >= jte Zeit & kleiner gleich jte +1 Zeit
                             if ($array_termine[$i]['Datum'] == $weekday) {
@@ -142,7 +162,8 @@ function build_calendar ($conn, $user_data)
                     }
                 $a = $a + 1;
                 echo "</td>";
-                $weekday = date('Y-m-d',time()+( (1 + $a) - date('w'))*24*3600);
+                #echo $weekday = date('Y-m-d',time()+( (1 + $a) - date('w'))*24*3600);
+                $weekday = date("Y-m-d", strtotime("$weekday") + (3600 * 24));
             }
             $j = $j + 1;
             echo "</tr>";
@@ -160,7 +181,7 @@ function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anh
     {
         $id = $user_data['id'];
         $modul = $user_modul['id'];
-        $sql = "select * from Termin where Nutzer_id = '$id'";
+        $sql = "select * from Modul where Nutzer_id = '$id'";
         $res = $conn->query($sql);
 
         $array = array();
@@ -170,26 +191,34 @@ function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anh
             {
                 $array[] = $row;
                 #erstellt immer einen neuen eintrag in $array für jede zeile
-
             }
 
             $i = 0;
             while ($i < count($array))
             {
-                $modul_id = $array[$i]['Modul_id'];
+                $modul_id = $array[$i]['id'];
+                $modul_name = $array[$i]['name'];
+                $link = $array[$i]['link'];
                 #echo $modul_id;
-                $sql = "select * from Modul where id = '$modul_id'";
+                $sql = "select * from Termin where Modul_id = '$modul_id'";
                 $result = $conn->query($sql);
-                if (mysqli_num_rows($result) > 0)
-                {
-                    $user_termin_modul = mysqli_fetch_assoc($result);
-                    $user_termin_modulname = $user_termin_modul['name'];
-                    echo "<p> <strong>Meeting", $i+1, ": ", $user_termin_modulname, "</strong></p>";
-                    echo "<p>", $array[$i]['Beschreibung'], "</p>";
-                    echo "<p>", $array[$i]['Datum'], " Zeit: ",$array[$i]['Zeitv'], "</p>";
-                    echo "<p>", $array[$i]['link'], "</p>";
+                #$alletermine = array();
 
-                }
+                    #$user_termin_modul = mysqli_fetch_assoc($result);
+                    #$user_termin_modulname = $user_termin_modul['name'];
+
+                    echo "<input type='checkbox' id='$modul_id' class='notseen'/>";
+                    echo "<label for='$modul_id'>'$modul_name'</label>";
+                    echo '<div class="content notseen">';
+                    while ($row2 = mysqli_fetch_assoc($result))
+                    {
+                        #$alletermine[] = $row2;
+                        echo '<p> Am ', $row2['Datum'], ' von ', $row2['Zeitv'], ' bis ', $row2['Zeitb'], '</p>';
+                    }
+
+                    echo "<a href='$link'>Zum Meeting! </a>";
+                    echo "</div>";
+
                 $i = $i + 1;
             }
         }

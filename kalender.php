@@ -150,6 +150,7 @@ if(isset($_POST['submit']))
 
 
 <main class="site-content">
+    <form method="post">
     <p><strong>Neue Datei hinzufügen</strong></p><br>
     <input type="file" placeholder="ICS Datei hochladen" name="upload" id="upload"><br>
     <p><strong>Neues Ereignis eintragen</strong></p><br>
@@ -166,7 +167,7 @@ if(isset($_POST['submit']))
     <input type="text" placeholder="link" name="link" id="link"><br><br><br>
 
     <input type="checkbox" id="wiederholung" name="wiederholung"><strong>Wiederkehrend</strong><br><br>
-    <label for="wiederholung">Wiederkehrend</label>
+    <label for="wiederholung">Wiederkehrend</label><br>
     <select name="repititiondropdown", id="repititiondropdown">
         <option value="t">Täglich</option>
         <option value="w">Wöchentlich</option>
@@ -175,8 +176,8 @@ if(isset($_POST['submit']))
     </select><br><br>
     <input type="date" name="until"><br><br>
 
-    <button type="submit" placeholder="Zum Kalender hinzufügen" name="submit" id="submit"><br><br>
-
+        <button type="submit" class="button standard" name="submit" id="submit">Termin hinzufügen</button><br><br>
+    </form>
 </main>
 <footer class="site-footer">
     <a href="#top">Nach Oben!</a>

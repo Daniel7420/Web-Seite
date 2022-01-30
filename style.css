@@ -118,7 +118,7 @@ th, td {
 }
 .meetings{
     flex: 1;
-    background: lightskyblue;
+    background-color: bisque;
 }
 .content-sidebox{
     width: 400px;

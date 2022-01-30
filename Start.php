@@ -83,17 +83,7 @@ $user_nextMeeting = processNextMeeting($conn, $user_appointment);
 
                     <h3>Nächstes Meeting</h3>
                     <p> <?php echo $user_data['name'], ', ';?></p> <br>
-                    <p> <?php echo $user_nextMeeting;?></p> <br>
-                    <a href="
-                        <?php
-                    $modul_id = $user_appointment['Modul_id'];
-                    $sql = "select link from Modul where id = $modul_id";
-                    $result = $conn->query($sql);
-                    $link = mysqli_fetch_assoc($result);
-                    echo $link['link'];
-                    ?>"
-                    >Zum Meeting!
-                    </a>
+                    <?php processNextMeeting($conn, $user_appointment);?> <br>
 
                 </article>
             </section>
