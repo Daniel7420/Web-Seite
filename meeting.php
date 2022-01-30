@@ -12,10 +12,11 @@ if(isset($_POST['sub']))
     $modul = $_POST['modul'];
     $desc = $_POST['descr'];
     $link = $_POST['link'];
+    $nutzer_id = $user_data['id'];
 
     if(!empty($modul) && !empty($desc) && !empty($link))
     {
-        $sql = "select * from Modul where name = '$modul'";
+        $sql = "select * from Modul where name = '$modul' && Nutzer_id = '$nutzer_id'";
         $res = $conn->query($sql);
 
         if($res && mysqli_num_rows($res) > 0)
@@ -34,6 +35,8 @@ if(isset($_POST['sub']))
     {
         echo "bitte alle Felder ausfüllen";
     }
+    header("Location: meeting.php");
+    die;
 }
 ?>
 <!DOCTYPE html>
@@ -45,34 +48,37 @@ if(isset($_POST['sub']))
 </head>
 <body>
 <div class="all">
-    <div class ="logout">
-        <form method="post">
-            <button id="logout" name="logout" type="submit">Logout</button>
-        </form>
-    </div>
-    <?php
-    if(isset($_POST['logout'])){
-        session_destroy();
-        header('Location: logout.php');
-    }
-    ?>
+
+    <header class="site-header">
+        <div class ="logout">
+            <form method="post">
+                <button id="logout" name="logout" type="submit">Logout</button>
+            </form>
+        </div>
+        <?php
+        if(isset($_POST['logout'])){
+            session_destroy();
+            header('Location: logout.php');
+        }
+        ?>
+        <h1>
+            <?php echo $user_data['vorname'],'`s ';?>Module
+        </h1>
+        <h2>
+            All in one for every Student
+        </h2>
+    </header>
     <hr>
     <nav class="site-nav">
+
         <ul class="site-nav-list">
-            <li><a href="Start.php">Startseite</a></li>
+            <li><a href="index.php">Startseite</a></li>
             <li><a href="kalender.php">Kalender</a></li>
+            <li><a href="meeting.php">Module <!--Hier könnte noch eine weitere verschachtelte Liste eingefügt werden--></a></li>
             <li><a href="notiz.php">Notizen/Dokumente</a></li>
-            <li><a href="mitteilung.php">Mitteilungen</a></li>
         </ul>
 
     </nav>
-
-    <header class="site-header">
-
-        <h1>
-            Module
-        </h1>
-    </header>
 
     <main class="site-content">
 
@@ -91,7 +97,7 @@ if(isset($_POST['sub']))
                     <input type="text" placeholder="Modulname" name="modul" id="modul"><br><br>
                     <input type="text" placeholder="Beschreibung" name="descr" id="descr"><br><br>
                     <input type="text" placeholder="Link der Veranstaltung" name="link" id="link"><br><br>
-                    <button class="button standard">Hochladen</button>
+                    <button type='submit' name='sub' class="button standard">Hochladen</button>
                 </form>
             </section>
         </div>

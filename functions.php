@@ -199,24 +199,32 @@ function show_user_meetings($conn, $user_data, $user_modul) // unsterstützt anh
                 $modul_id = $array[$i]['id'];
                 $modul_name = $array[$i]['name'];
                 $link = $array[$i]['link'];
+                $beschreibung = $array[$i]['beschreibung'];
                 #echo $modul_id;
-                $sql = "select * from Termin where Modul_id = '$modul_id'";
+                $sql = "select * from Termin where Modul_id = '$modul_id' order by Termin.Datum, Termin.Zeitv DESC";
                 $result = $conn->query($sql);
                 #$alletermine = array();
 
                     #$user_termin_modul = mysqli_fetch_assoc($result);
                     #$user_termin_modulname = $user_termin_modul['name'];
 
-                    echo "<input type='checkbox' id='$modul_id' class='notseen'/>";
-                    echo "<label for='$modul_id'>'$modul_name'</label>";
+                    echo "<input type='checkbox' id=$modul_id class='notseen'/>";
+                    echo "<label for=$modul_id>$modul_name</label>";
                     echo '<div class="content notseen">';
+                    echo "<div style: flex>";
+                    echo "<div style='flex: 1'>Beschreibung: $beschreibung </div>";
                     while ($row2 = mysqli_fetch_assoc($result))
                     {
                         #$alletermine[] = $row2;
+
+                        echo "<div>";
                         echo '<p> Am ', $row2['Datum'], ' von ', $row2['Zeitv'], ' bis ', $row2['Zeitb'], '</p>';
+                        echo "</div>";
+
                     }
 
                     echo "<a href='$link'>Zum Meeting! </a>";
+                    echo "</div>";
                     echo "</div>";
 
                 $i = $i + 1;
@@ -270,6 +278,32 @@ function create_note_dropdown($conn, $user_data)
         while ($i < count($user_notes)) {
             $value = $user_notes[$i]['name'];
             $value2 = $user_notes[$i]['id'];
+            echo "<option value='$value2'>$value</option>";
+            $i = $i + 1;
+        }
+    }
+    else
+    {
+        echo "<option value='Noch kein Modul angelegt'>Kein Modul vorhanden</option>";
+    }
+}
+
+function create_appointment_dropdown($conn, $user_data)
+{
+    $Nutzer_id = $user_data['id'];
+
+    $sql = "select * from Termin where Nutzer_id = $Nutzer_id";
+    $resultat = $conn->query($sql);
+    $user_notes = array();
+    while ($row = mysqli_fetch_assoc($resultat))
+    {
+        $user_appointments[] = $row;
+    }
+    $i = 0;
+    if (!empty($user_appointments)) {
+        while ($i < count($user_appointments)) {
+            $value = $user_appointments[$i]['Beschreibung'];
+            $value2 = $user_appointments[$i]['Termin_id'];
             echo "<option value='$value2'>$value</option>";
             $i = $i + 1;
         }

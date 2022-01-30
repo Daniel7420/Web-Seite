@@ -20,7 +20,7 @@ if(isset($_POST['login'])){
         #https://www.geeksforgeeks.org/how-to-display-logged-in-user-information-in-php/
 
             $_SESSION['mail'] = $user_data['mail'];
-            header("Location: Start.php");
+            header("Location: index.php");
             die;
         }
     else {

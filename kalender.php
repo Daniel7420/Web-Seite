@@ -107,6 +107,18 @@ if(isset($_POST['submit']))
     die;
     #https://stackoverflow.com/questions/25462367/whenever-i-reload-refresh-my-page-it-doubles-the-mysql-query-php
 }
+
+if (isset($_POST['del']))
+{
+    $Nutzer_id = $user_data['id'];
+    echo $termin = $_POST['badapp'];
+
+    $sql = "delete from Termin where Termin_id = '$termin'";
+    $conn->query($sql);
+
+    header("Location: kalender.php");
+    die;
+}
 ?>
 
 <!DOCTYPE html>
@@ -133,17 +145,20 @@ if(isset($_POST['submit']))
     }
     ?>
     <h1>
-        Kalender
+        <?php echo $user_data['vorname'],'`s ';?>Termine
     </h1>
+    <h2>
+        All in one for every Student
+    </h2>
 </header>
 <hr>
 
 <nav class="site-nav">
     <ul class="site-nav-list">
-        <li><a href="Start.php">Startseite</a></li>
-        <li><a href="meeting.php">Meetings <!--Hier könnte noch eine weitere verschachtelte Liste eingefügt werden--></a></li>
+        <li><a href="index.php">Startseite</a></li>
+        <li><a href="kalender.php">Kalender</a></li>
+        <li><a href="meeting.php">Module <!--Hier könnte noch eine weitere verschachtelte Liste eingefügt werden--></a></li>
         <li><a href="notiz.php">Notizen/Dokumente</a></li>
-        <li><a href="mitteilung.php">Mitteilungen</a></li>
     </ul>
 
 </nav>
@@ -178,6 +193,17 @@ if(isset($_POST['submit']))
 
         <button type="submit" class="button standard" name="submit" id="submit">Termin hinzufügen</button><br><br>
     </form>
+
+    <div class="terminloeschen">
+        <form method="post">
+            <select name="badapp" id="badapp">
+                <?php
+                create_appointment_dropdown($conn, $user_data);
+                ?>
+            </select>
+            <button type="submit" name="del" id="del">Termin löschen</button>
+        </form>
+    </div>
 </main>
 <footer class="site-footer">
     <a href="#top">Nach Oben!</a>

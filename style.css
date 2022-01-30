@@ -68,7 +68,7 @@ h3{
 }
 .next_meeting {
     text-align: center;
-    background-color: darkgrey;
+    background-color: bisque;
     padding: 1em;
     margin: 1em;
 }
@@ -140,6 +140,8 @@ th, td {
 .standard {background-color: lightgray;
     color:black;
 }
+
+/*Inspiration aus vergangenem Projekt zum Erstellen einer Web Seite und https://www.w3schools.com/howto/howto_js_accordion.asp */
 .standard:hover {
     background: #fff;
 }
@@ -152,12 +154,12 @@ th, td {
     padding: 8px 22px;
     margin: 20px 0px 1px 0px;
     cursor: pointer;
-    background: #f0f0f0;
+    background: whitesmoke;
     color: #000;
     transition: ease .5s;
 }
 #accordeon label:hover {
-    background: #d7d7d7;
+    background: bisque;
     cursor: pointer;
 }
 .content {

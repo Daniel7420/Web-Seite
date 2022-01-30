@@ -44,35 +44,37 @@ if (isset($_POST['delete']))
 </head>
 <body>
 <div class="all">
-    <div class ="logout">
-        <form method="post">
-            <button id="logout" name="logout" type="submit">Logout</button>
-        </form>
-    </div>
-    <?php
-    if(isset($_POST['logout'])){
-        session_destroy();
-        header('Location: logout.php');
-    }
-    ?>
+
+    <header class="site-header">
+        <div class ="logout">
+            <form method="post">
+                <button id="logout" name="logout" type="submit">Logout</button>
+            </form>
+        </div>
+        <?php
+        if(isset($_POST['logout'])){
+            session_destroy();
+            header('Location: logout.php');
+        }
+        ?>
+        <h1>
+            <?php echo $user_data['vorname'],'`s ';?>Notizen
+        </h1>
+        <h2>
+            All in one for every Student
+        </h2>
+    </header>
     <hr>
     <nav class="site-nav">
+
         <ul class="site-nav-list">
-            <li><a href="Start.php">Startseite</a></li>
+            <li><a href="index.php">Startseite</a></li>
             <li><a href="kalender.php">Kalender</a></li>
-            <li><a href="meeting.php">Meetings <!--Hier könnte noch eine weitere verschachtelte Liste eingefügt werden--></a></li>
+            <li><a href="meeting.php">Module <!--Hier könnte noch eine weitere verschachtelte Liste eingefügt werden--></a></li>
             <li><a href="notiz.php">Notizen/Dokumente</a></li>
-            <li><a href="mitteilung.php">Mitteilungen</a></li>
         </ul>
 
     </nav>
-
-    <header class="site-header">
-
-        <h1>
-            Notizen
-        </h1>
-    </header>
 
     <main class="site-content">
 
