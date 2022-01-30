@@ -79,19 +79,20 @@ if(isset($_POST['sub']))
         <div style="display: flex">
 
             <div class="meetings">
+
                 <?php show_user_meetings($conn, $user_data, $user_modul);?>;
             </div>
 
-        <section class="content-sidebox">
+            <section class="content-sidebox">
 
-                <h3>Modul hinzufügen</h3>
+                <h3>Modul</h3>
                 <form method="post">
                     <input type="text" placeholder="Modulname" name="modul" id="modul"><br><br>
                     <input type="text" placeholder="Beschreibung" name="descr" id="descr"><br><br>
                     <input type="text" placeholder="Link der Veranstaltung" name="link" id="link"><br><br>
-                    <button type="submit" placeholder ="okay" name="sub" id="sub"></button>
+                    <button class="button standard">Hochladen</button>
                 </form>
-        </section>
+            </section>
         </div>
 
         <!-- Das ist eine geordnete Liste mit Nummern statt Aufzählungspunkten

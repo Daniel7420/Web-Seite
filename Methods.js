@@ -126,6 +126,7 @@ input.addEventListener('change', start => {
     }
 
     //https://stackoverflow.com/questions/66406611/how-to-save-content-form-text-editor-to-database-in-php-and-javascript
+
     function saveToDB (text) {
         let xhr = new XMLHttpRequest();
         xhr.open("POST", '/api.php', true);

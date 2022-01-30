@@ -35,7 +35,9 @@ h3{
 }
 
 /* Provisorische Gestaltung der Navigation */
-
+.site-nav{
+    border: 1px solid black;
+}
 .site-nav-list,
 .site-footer
 {
@@ -124,4 +126,63 @@ th, td {
 }
 .content-kalender{
     flex: 1;
+}
+.border{
+    color: black;
+    width: 1px;
+    style: solid;
+}
+.button {
+    border: solid;
+    color: black;
+    cursor: pointer;
+}
+.standard {background-color: lightgray;
+    color:black;
+}
+.standard:hover {
+    background: #fff;
+}
+.notseen {
+    display: none;
+}
+
+#accordeon label {
+    display: block;
+    padding: 8px 22px;
+    margin: 20px 0px 1px 0px;
+    cursor: pointer;
+    background: #f0f0f0;
+    color: #000;
+    transition: ease .5s;
+}
+#accordeon label:hover {
+    background: #d7d7d7;
+    cursor: pointer;
+}
+.content {
+    background: whitesmoke;
+    padding: 10px 25px;
+    border: 1px solid #d4d4d4;
+}
+#accordeon input:checked + label + .content {
+    display: block;
+    webkit-animation: fadeIn 0.8s ease-in;
+    -moz-animation: fadeIn 0.8s ease-in;
+    -o-animation: fadeIn 0.8s ease-in;
+    animation: fadeIn 0.8s ease-in;
+}
+@-webkit-keyframes fadeIn {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+    1% {
+        display: block;
+        opacity: 0;
+    }
+    100% {
+        display: block;
+        opacity: 1;
+    }
 }

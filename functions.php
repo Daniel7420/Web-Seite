@@ -225,6 +225,67 @@ function create_module_dropdown($array)
     }
 }
 
+function create_note_dropdown($conn, $user_data)
+{
+    $Nutzer_id = $user_data['id'];
+
+    $sql = "select * from Notiz where Nutzer_id = $Nutzer_id";
+    $rs = $conn->query($sql);
+    $user_notes = array();
+    while ($row = mysqli_fetch_assoc($rs))
+    {
+        $user_notes[] = $row;
+    }
+    $i = 0;
+    if (!empty($user_notes)) {
+        while ($i < count($user_notes)) {
+            $value = $user_notes[$i]['name'];
+            $value2 = $user_notes[$i]['id'];
+            echo "<option value='$value2'>$value</option>";
+            $i = $i + 1;
+        }
+    }
+    else
+    {
+        echo "<option value='Noch kein Modul angelegt'>Kein Modul vorhanden</option>";
+    }
+}
+function show_user_notes ($conn, $user_data)
+{
+    if(isset($user_data['id']))
+    {
+        $id = $user_data['id'];
+        $sql = "select * from Notiz where Nutzer_id = '$id'";
+        $res = $conn->query($sql);
+
+        $array = array();
+        if (mysqli_num_rows($res) > 0)
+        {
+            while ($row = mysqli_fetch_assoc($res))
+            {
+                $array[] = $row;
+                #erstellt immer einen neuen eintrag in $array für jede zeile
+
+            }
+            $i = 0;
+            while ($i < count($array))
+            {
+                $modulname = $array[$i]['modul_id'];
+                $notiz_id = $array[$i]['id'];
+                $a = $array[$i]['name'];
+                echo "<input type='checkbox' id='$notiz_id' class='notseen'/>";
+                echo "<label for='$notiz_id'>$a</label>";
+                echo '<div class="content notseen">';
+                echo '<p>', $modulname, '</p>';
+                echo "<p>", $array[$i]['text'], "</p>";
+                echo "</div>";
+
+                $i = $i + 1;
+            }
+        }
+    }
+}
+
 
 
 

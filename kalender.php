@@ -94,12 +94,18 @@ if(isset($_POST['submit']))
 
             }
 
+
+
         }
     else{
         echo "Kein Eintrag vorhanden!";
 
     }
     # https://www.youtube.com/watch?v=yNolUEBE3Wc --> creating an array
+
+    header("Location: kalender.php");
+    die;
+    #https://stackoverflow.com/questions/25462367/whenever-i-reload-refresh-my-page-it-doubles-the-mysql-query-php
 }
 ?>
 
@@ -114,73 +120,67 @@ if(isset($_POST['submit']))
     <script src="Methods.js" defer></script>
 </head>
 <body class="all">
-    <header class="site-header">
-        <div class ="logout">
-            <form method="post">
-                <button id="logout" name="logout" type="submit">Logout</button>
-            </form>
-        </div>
+<header class="site-header">
+    <div class ="logout">
+        <form method="post">
+            <button id="logout" name="logout" type="submit">Logout</button>
+        </form>
+    </div>
+    <?php
+    if(isset($_POST['logout'])){
+        session_destroy();
+        header('Location: logout.php');
+    }
+    ?>
+    <h1>
+        Kalender
+    </h1>
+</header>
+<hr>
+
+<nav class="site-nav">
+    <ul class="site-nav-list">
+        <li><a href="Start.php">Startseite</a></li>
+        <li><a href="meeting.php">Meetings <!--Hier könnte noch eine weitere verschachtelte Liste eingefügt werden--></a></li>
+        <li><a href="notiz.php">Notizen/Dokumente</a></li>
+        <li><a href="mitteilung.php">Mitteilungen</a></li>
+    </ul>
+
+</nav>
+
+
+<main class="site-content">
+    <p><strong>Neue Datei hinzufügen</strong></p><br>
+    <input type="file" placeholder="ICS Datei hochladen" name="upload" id="upload"><br>
+    <p><strong>Neues Ereignis eintragen</strong></p><br>
+    <input type="date" name="date" id="date"><br><br>
+    <input type="time" placeholder="von" name="uhrzeitv" id="uhrzeitv"><br><br>
+    <input type="time" placeholder="bis" name="uhrzeitb" id="uhrzeitb"><br><br>
+    <input type="text" placeholder="beschreibung" name="beschreibung" id="beschreibung"><br><br>
+    <select name="modul", id="modul">
         <?php
-        if(isset($_POST['logout'])){
-            session_destroy();
-            header('Location: logout.php');
-        }
+        create_module_dropdown($modules);
         ?>
-        <h1>
-            Kalender
-        </h1>
-    </header>
-    <hr>
+    </select><br><br>
+    <!--<input type="text" placeholder="modul" name="modul" id="modul"><br><br>-->
+    <input type="text" placeholder="link" name="link" id="link"><br><br><br>
 
-    <nav class="site-nav">
-        <ul class="site-nav-list">
-            <li><a href="Start.php">Startseite</a></li>
-            <li><a href="meeting.php">Meetings <!--Hier könnte noch eine weitere verschachtelte Liste eingefügt werden--></a></li>
-            <li><a href="notiz.php">Notizen/Dokumente</a></li>
-            <li><a href="mitteilung.php">Mitteilungen</a></li>
-        </ul>
+    <input type="checkbox" id="wiederholung" name="wiederholung"><strong>Wiederkehrend</strong><br><br>
+    <label for="wiederholung">Wiederkehrend</label>
+    <select name="repititiondropdown", id="repititiondropdown">
+        <option value="t">Täglich</option>
+        <option value="w">Wöchentlich</option>
+        <option value="m">Monatliche</option>
+        <option value="j">Jährlich</option>
+    </select><br><br>
+    <input type="date" name="until"><br><br>
 
-    </nav>
+    <button type="submit" placeholder="Zum Kalender hinzufügen" name="submit" id="submit"><br><br>
 
-
-    <main class="site-content">
-        <div class="content-sidebox">
-            <form method="post">
-                <article class="sidebox">
-                    <p><strong>Neue Datei hinzufügen</strong></p><br>
-                    <input type="file" placeholder="ICS Datei hochladen" name="upload" id="upload"><br>
-                    <p><strong>Neues Ereignis eintragen</strong></p><br>
-                    <input type="date" name="date" id="date"><br><br>
-                    <input type="time" placeholder="von" name="uhrzeitv" id="uhrzeitv"><br><br>
-                    <input type="time" placeholder="bis" name="uhrzeitb" id="uhrzeitb"><br><br>
-                    <input type="text" placeholder="beschreibung" name="beschreibung" id="beschreibung"><br><br>
-                    <select name="modul", id="modul">
-                        <?php
-                        create_module_dropdown($modules);
-                        ?>
-                    </select><br><br>
-                    <!--<input type="text" placeholder="modul" name="modul" id="modul"><br><br>-->
-                    <input type="text" placeholder="link" name="link" id="link"><br><br><br>
-
-                    <input type="checkbox" id="wiederholung" name="wiederholung"><strong>Wiederkehrend</strong><br><br>
-                    <label for="wiederholung">Wiederkehrend</label>
-                    <select name="repititiondropdown", id="repititiondropdown"">
-                        <option value="t">Täglich</option>
-                        <option value="w">Wöchentlich</option>
-                        <option value="m">Monatliche</option>
-                        <option value="j">Jährlich</option>
-                    </select><br><br>
-                    <input type="date" name="until"><br><br>
-
-                    <button type="submit" placeholder="Zum Kalender hinzufügen" name="submit" id="submit"><br><br>
-                </article>
-            </form>
-        </div>
-
-    </main>
-    <footer class="site-footer">
-        <a href="#top">Nach Oben!</a>
-    </footer>
+</main>
+<footer class="site-footer">
+    <a href="#top">Nach Oben!</a>
+</footer>
 
 </body>
 </html>

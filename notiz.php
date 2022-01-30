@@ -5,6 +5,35 @@ include("connection.php");
 include("functions.php");
 
 $user_data = check_login($conn);
+$modules = get_modules_as_array($user_data, $conn);
+
+if (isset($_POST['notizabgeben']))
+{
+    $Nutzer_id = $user_data['id'];
+    $titel = $_POST['notizname'];
+    $inhalt = $_POST['notiztext'];
+    $modul = $_POST['modul'];
+
+    if (!empty($titel) && !empty($inhalt))
+    {
+        $sql = "insert into Notiz (name, text, Nutzer_id, modul_id) values ('$titel', '$inhalt', $Nutzer_id, '$modul')";
+        $result = $conn->query($sql);
+        header("location: notiz.php");
+        die;
+    }
+}
+
+if (isset($_POST['delete']))
+{
+    $Nutzer_id = $user_data['id'];
+    $notiz = $_POST['badnote'];
+
+    $sql = "delete from Notiz where id = '$notiz'";
+    $conn->query($sql);
+
+    header("Location: notiz.php");
+    die;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,18 +75,39 @@ $user_data = check_login($conn);
     </header>
 
     <main class="site-content">
-        <section class="sidebox">
-            <article class="sidebox">
-                <h3>Dokumente</h3>
-                <p>Item One (PHP Get)</p>
-                <p>Item Two (PHP Get)</p>
-                <p>Item Three (PHP Get)</p>
-                <hr>
-            </article>
-            <article class="sidebox">
-                <button type="submit" name="upload" id="upload">Datei hochladen</button>
-            </article>
-        </section>
+
+        <div style="display: flex">
+            <div class="meetings">
+                <div id='accordeon'>
+                    <?php show_user_notes($conn, $user_data);?>
+                </div>
+            </div>
+        </div><br><br>
+
+        <div class="neuenotiz">
+            <form method="post">
+                <input name="notizname" id="notizname" type="text" placeholder="Titel">
+                <select name="modul" id="modul">
+                    <?php
+                    create_module_dropdown($modules);
+                    ?>
+                </select><br><br>
+                <textarea name="notiztext" id="notiztext">
+                </textarea><br>
+                <button type="submit" id="notizabgeben" name="notizabgeben" placeholder="Notiz fertig!">Notiz fertig!</button><br><br>
+            </form>
+        </div>
+
+        <div class="notizloeschen">
+            <form method="post">
+                <select name="badnote" id="badnote">
+                    <?php
+                    create_note_dropdown($conn, $user_data);
+                    ?>
+                </select>
+                <button type="submit" name="delete" id="delete">Notiz löschen</button>
+            </form>
+        </div>
 
     </main>
     <!--
